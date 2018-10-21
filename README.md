@@ -26,12 +26,13 @@
   - Results indicated 0 < AR/MA component < 1
   - ARIMA orders to model (p,d,q): (0,1,0), (1,1,0), (0,1,1)
   - ARIMA Results
-    (p,d,q)|RMSE
-    -------|---------
-    (0,1,0)|33 .122005
-    (1,1,0)|33.853124
-    (0,1,1)|33.983999
-    - Lowest RMSE: ARIMA(0,1,0)
+
+(p,d,q)|RMSE
+-------|---------
+(0,1,0)|33 .122005
+(1,1,0)|33.853124
+(0,1,1)|33.983999
+- Lowest RMSE: ARIMA(0,1,0)
 
 **LSTM**
 - Model configuration
@@ -39,14 +40,15 @@
     - Performance did not improve from configs adding to neural net depth (stacked LSTM layers, dropouts, additional dense layers, etc)
     - Hyperparameters tuned with hyperopt: optimizer, learning rate, units, activation function, vector bias
 - LSTM Results
-  Optimizer|RMSE     
-  ---------|---------
-  RMSprop|34.654522
-  Adam|34.940433
-  Adamax|34.568555
-  Adagrad|34.307214
-  Adadelta|39.469572
-  - Lowest RMSE: Adagrad (learning rate tuned with TPE algorithm)
+
+Optimizer|RMSE     
+---------|---------
+RMSprop|34.654522
+Adam|34.940433
+Adamax|34.568555
+Adagrad|34.307214
+Adadelta|39.469572
+- Lowest RMSE: Adagrad (learning rate tuned with TPE algorithm)
 
 ### 4. Exogenous Variables
 - The following exogenous data was collected to potentially include as features for price forecasting
