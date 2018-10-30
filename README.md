@@ -15,31 +15,52 @@
     - Address missingness for coins depending on time series start dates
 
 ### 2. EDA
-- Stationarity: first degree differenced
-- Structural breaks
+
+![alt text](https://raw.githubusercontent.com/brianmcguckin/thinkful_final_capstone/master/assets/eth_ts.png "eth_ts.png")
+
+- Series contains multiple regime changes
   - Changepoint detection using combination of PELT & FBProphet
   - Size of rolling window set to median regime length (40 days)
+- Series is not stationarity
+  - First degree differencing produces best results
+  - Series is also stationary within rolling forecast window size
+- No presence of seasonality component
+
+![alt text](https://raw.githubusercontent.com/brianmcguckin/thinkful_final_capstone/master/assets/strucbreaks.png "strucbreaks.png")
+
+![alt text](https://raw.githubusercontent.com/brianmcguckin/thinkful_final_capstone/master/assets/stationarity_adf.png "stationarity_adf.png")
+
 
 ### 3. Time Series Forecasting
 **ARIMA**
-- ACF/PACF
-  - Results indicated 0 < AR/MA component < 1
-  - ARIMA orders to model (p,d,q): (0,1,0), (1,1,0), (0,1,1)
-  - ARIMA Results
+- ACF/PACF (Auto & Partial Auto Correlation Functions)
 
-(p,d,q)|RMSE
--------|---------
-(0,1,0)|33 .122005
-(1,1,0)|33.853124
-(0,1,1)|33.983999
-- Lowest RMSE: ARIMA(0,1,0)
+![alt text](https://raw.githubusercontent.com/brianmcguckin/thinkful_final_capstone/master/assets/acf_pacf.png "acf_pacf.png")
+
+- Autoreggressive: *p < 1*
+- Integrated: *d = 1*
+- Moving Agerave: *q < 1*
+- ARIMA orders modeled (p,d,q): (0,1,0), (1,1,0), (0,1,1)
 
 **LSTM**
 - Model configuration
   - Single LSTM layer and a Dense output layer
     - Performance did not improve from configs adding to neural net depth (stacked LSTM layers, dropouts, additional dense layers, etc)
     - Hyperparameters tuned with hyperopt: optimizer, learning rate, units, activation function, vector bias
-- LSTM Results
+
+**Time Series Forecast Results**
+
+![alt text](https://raw.githubusercontent.com/brianmcguckin/thinkful_final_capstone/master/assets/ts_results.png "ts_results.png")
+
+- **ARIMA Lowest RMSE: 33.122005** (ARIMA(0,1,0))
+
+(p,d,q)|RMSE
+-------|---------
+(0,1,0)|33.122005
+(1,1,0)|33.853124
+(0,1,1)|33.983999
+
+- **LSTM Lowest RMSE: 34.307214** (Adagrad learning rate tuned with TPE algorithm)
 
 Optimizer|RMSE     
 ---------|---------
@@ -48,7 +69,6 @@ Adam|34.940433
 Adamax|34.568555
 Adagrad|34.307214
 Adadelta|39.469572
-- Lowest RMSE: Adagrad (learning rate tuned with TPE algorithm)
 
 ### 4. Exogenous Variables
 - The following exogenous data was collected to potentially include as features for price forecasting
@@ -58,11 +78,8 @@ Adadelta|39.469572
 - Granger causality tests used to determine which to train models with
   - ETH close price Granger caused (one way) by: ETH Volume, XRP, LTC, XMR
 
-**Results**
-![alt text](https://raw.githubusercontent.com/brianmcguckin/thinkful_final_capstone/master/results_graph.png "forecast results")
-- ARIMA(0,1,0)
-  - RMSE: 32.965052
-  - Improved using ETH Volume
-- LSTM (Adagrad)
-  - RMSE:33.605011
-  - Improved using XRP
+**Exogenous Variables Forecast Results**
+
+![alt text](https://raw.githubusercontent.com/brianmcguckin/thinkful_final_capstone/master/assets/exog_results.png "exog_results.png")
+- **ARIMA(0,1,0) Lowest RMSE: 32.965052** (Improved using ETH Volume)
+- **LSTM (Adagrad) Lowest RMSE: 33.605011** (Improved using XRP)
