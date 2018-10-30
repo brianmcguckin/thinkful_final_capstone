@@ -59,6 +59,7 @@ Adadelta|39.469572
   - ETH close price Granger caused (one way) by: ETH Volume, XRP, LTC, XMR
 
 **Results**
+![alt text](results_graph.png "forecast results")
 - ARIMA(0,1,0)
   - RMSE: 32.965052
   - Improved using ETH Volume
